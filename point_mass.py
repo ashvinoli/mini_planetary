@@ -25,7 +25,7 @@ class point_mass():
 
     def draw_me(self):
         self.draw_after_images()
-        self.put_name_on_screen()
+        self.put_text_on_screen(self.name+" "+str(round(self.velocity.magnitude(),2))+"m/s")
 
     def draw_after_images(self):
         for pos in self.afterimages:
@@ -40,9 +40,9 @@ class point_mass():
         for i in range(1,len(points)):
             pygame.draw.line(self.screen,(0,0,255),(points[i-1][0],points[i-1][1]),(points[i][0],points[i][1]))
 
-    def put_name_on_screen(self):
+    def put_text_on_screen(self,text):
         myfont = pygame.font.SysFont('Comic Sans MS', 15)
-        textsurface = myfont.render(self.name+" "+str(round(self.velocity.magnitude(),2))+"m/s", False, (0, 0, 0))
+        textsurface = myfont.render(text, False, (0, 0, 0))
         self.screen.blit(textsurface,(self.position.x+self.radius,self.position.y))
         
     def update_me(self):
@@ -71,7 +71,8 @@ class point_mass():
             radius_vector = other.position - self.position
             if radius_sum >= radius_vector.magnitude():
                 self.velocity = -self.velocity
-
+                other.velocity = -other.velocity
+                
                 
     def do_all(self,others):
         self.compute_force_due_to_gravity(others)

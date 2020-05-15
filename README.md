@@ -9,3 +9,4 @@ Then.
 ```
 python main.py
 ```
+Press Esc to quit.

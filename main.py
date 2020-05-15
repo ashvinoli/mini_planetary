@@ -11,8 +11,9 @@ def main():
     SUN = point_mass(10000,20,vector(500,300),screen,"SUN",vector(0,0))
     hari = point_mass(0.1,10,vector(770,580),screen,"hari",vector(-4,0))
     keshab = point_mass(0.1,10,vector(300,510),screen,"keshab",vector(0,-4))
+    nabin= point_mass(0.1,10,vector(670,500),screen,"nabin",vector(0,-4))
     
-    list_of_masses = [ram,SUN,hari,keshab]
+    list_of_masses = [ram,SUN,hari,keshab,nabin]
     masses = all_masses(list_of_masses)
     run = True
     while (run):

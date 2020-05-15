@@ -70,8 +70,8 @@ class point_mass():
             radius_sum = self.radius + other.radius
             radius_vector = other.position - self.position
             if radius_sum >= radius_vector.magnitude():
-                self.velocity = vector(0,0)
-                self.force  = vector(0,0)
+                self.velocity = -self.velocity
+
                 
     def do_all(self,others):
         self.compute_force_due_to_gravity(others)

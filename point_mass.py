@@ -5,11 +5,12 @@ class env_vars():
     G = 6.67 *10**(-1)
 
 class point_mass():
-    def __init__(self,mass,radius,position,screen,velocity=None,force = None, charge = 0):
+    def __init__(self,mass,radius,position,screen,name,velocity=None,force = None, charge = 0):
         self.mass = mass
         self.radius = radius
         self.position = position
         self.screen = screen
+        self.name = name
         if velocity is None:
             self.velocity = vector(0,0)
         else:
@@ -24,7 +25,7 @@ class point_mass():
 
     def draw_me(self):
         self.draw_after_images()
-        #pygame.draw.circle(self.screen,(0,0,0),(int(self.position.x),int(self.position.y)),self.radius)
+        self.put_name_on_screen()
 
     def draw_after_images(self):
         for pos in self.afterimages:
@@ -38,7 +39,12 @@ class point_mass():
             points.append((point.x,point.y))
         for i in range(1,len(points)):
             pygame.draw.line(self.screen,(0,0,255),(points[i-1][0],points[i-1][1]),(points[i][0],points[i][1]))
-            
+
+    def put_name_on_screen(self):
+        myfont = pygame.font.SysFont('Comic Sans MS', 15)
+        textsurface = myfont.render(self.name+" "+str(round(self.velocity.magnitude(),2))+"m/s", False, (0, 0, 0))
+        self.screen.blit(textsurface,(self.position.x+self.radius,self.position.y))
+        
     def update_me(self):
         acceleration = self.force/self.mass
         self.velocity += acceleration

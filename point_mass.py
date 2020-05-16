@@ -1,6 +1,7 @@
 from vector_class import vector
 import pygame
 
+
 class env_vars():
     G = 6.67 *10**(-1)
 
@@ -70,13 +71,20 @@ class point_mass():
             radius_sum = self.radius + other.radius
             radius_vector = other.position - self.position
             if radius_sum >= radius_vector.magnitude():
-                self.velocity = -self.velocity
-                other.velocity = -other.velocity
+               self.handle_collision_elastically(other)
                 
+        
+    def handle_collision_elastically(self,other):
+        final_v_x = ((self.mass-other.mass)/(self.mass+other.mass))*self.velocity.x + ((2*other.mass)/(self.mass+other.mass))*other.velocity.x
+        final_v_y = ((self.mass-other.mass)/(self.mass+other.mass))*self.velocity.y + ((2*other.mass)/(self.mass+other.mass))*other.velocity.y
+        final_v_x_o = ((other.mass-self.mass)/(self.mass+other.mass))*other.velocity.x + ((2*self.mass)/(self.mass+other.mass))*self.velocity.x
+        final_v_y_o = ((other.mass-self.mass)/(self.mass+other.mass))*other.velocity.y + ((2*self.mass)/(self.mass+other.mass))*self.velocity.y
+        self.velocity = vector(final_v_x,final_v_y)
+        other.velocity = vector(final_v_x_o,final_v_y_o)
+
                 
     def do_all(self,others):
         self.compute_force_due_to_gravity(others)
-        self.test_for_collision(others)
         self.update_me()
         self.draw_me()
     
@@ -86,6 +94,11 @@ class all_masses():
         self.masses_list = masses_list
 
     def execute(self):
+        copy_others = self.masses_list.copy()
+        for item in self.masses_list:
+            copy_others.remove(item)
+            item.test_for_collision(copy_others)
+            
         for item in self.masses_list:
             others = self.masses_list.copy()
             others.remove(item)

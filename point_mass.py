@@ -58,9 +58,11 @@ class point_mass():
             self.traces.pop(0)
         self.traces.append(self.position)
     
-
-    def compute_force_due_to_gravity(self,others):
+    def compute_forces(self,others):
         self.force = vector(0,0)
+        self.compute_force_due_to_gravity(others)
+        
+    def compute_force_due_to_gravity(self,others):
         for other in others:
             radius_vector = other.position - self.position
             force = radius_vector.unit_vec() * (env_vars.G * self.mass*other.mass )/(radius_vector.magnitude()**2)
@@ -84,7 +86,7 @@ class point_mass():
 
                 
     def do_all(self,others):
-        self.compute_force_due_to_gravity(others)
+        self.compute_forces(others)
         self.update_me()
         self.draw_me()
     
